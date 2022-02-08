@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Party Loyalty | Senate</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="stylesheet" href="./myStyle.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
+</head>
+<body onload="callTableGlanceLoyal(api_house)">
+    <nav class="container -md">
+        <div class="row">
+          <div class="d-flex justify-content-start" id="homelogoname">
+    
+            <a class="col-6 fs-1 fw-bolder" href="./home-starter-page.html">
+              <img src="../img/DIG_Home_h1.png" alt="logo">
+              Data Insight Group
+            </a>
+             <a href="mailto:info@datainsightgroup.net"><img src="../img/dig title.png" alt="mail"></a>
+          </div>
+          
+          <ul id="navbar" class="row row-cols-5 border border-dark border-3">
+            <li id="hovnav" class="col-1 d-flex align-items-center justify-content-center"> <a href="./home-starter-page.html">Home</a></li>
+            
+            <li style="list-style: none;" class="col-2 d-flex align-items-center">
+              <div class="btn-group" >
+                <a id="hovnav" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                  Congress 113
+                </a>
+                <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" href="./house-starter-page.html">House</a></li>
+                  <li><a class="dropdown-item" href="./senate-starter-page.html">Senate</a></li>
+                </ul>
+              </div>
+            </li>
+            <li style="list-style: none;" class="col-2 d-flex align-items-center">
+                <div class="btn-group" >
+                  <a id="hovnav" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Attendance
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="./house_attendance-starter-page.html">House</a></li>
+                    <li><a class="dropdown-item" href="./senate_attendance-starter-page.html">Senate</a></li>
+                  </ul>
+                </div>
+            </li>
+              <li style="list-style: none;" class="col-2 d-flex align-items-center">
+                <div class="btn-group" >
+                  <a id="hovnav" type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Party Loyalty
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="./house_party-loyalty-starter-page.html">House</a></li>
+                    <li><a class="dropdown-item" href="./senate_party-loyalty-starter-page.html">Senate</a></li>
+                  </ul>
+                </div>
+            </li>
+    
+          </ul>
+        </div>
+      </nav>         
+
+
+   <!-- <header>            
+       <div>
+       </div>
+   </header> -->
+   <!--Table container-->
+   <div class="container -md d-flex flex-row">
+   <div>
+       <h2>Party Loyalty</h2>
+       <p>Those who consider themselves to be strong partisans, strong Democrats and strong Republicans respectively, tend to be the most faithful in voting for their party's nominee for office and legislation that backs their party's agenda. </p>
+    </div>
+    <div class="col-5">
+       <h2>Senate at a glance</h2>
+    
+       <table class="table">
+         
+           <thead>
+               <tr>
+                   <th>Party</th>
+                   <th>Number of Reps</th>
+                   <th>% Voted with Prty</th>
+               </tr>
+           </thead>
+           <tbody id="glance">
+                <tr>
+                    <td>Republican</td>
+                    <td>{{nroRepublicans}}</td>
+                    <td>{{pctVotesRepublicans}}</td>
+                </tr>
+                <tr>
+                    <td>Democrat</td>
+                    <td>{{nroDemocrats}}</td>
+                    <td>{{pctVotesDemocrats}}</td>
+                </tr>
+                <tr style="display: none;">
+                    <td>Independent</td>
+                    <td>{{nroIndependists}}</td>
+                    <td>{{pctVotesIndependists}}%</td>
+                </tr>
+                <tr>
+                    <td>Total</td>
+                    <td>{{total}}</td>
+                    <td>{{pctTotal}}%</td>
+                </tr>
+           </tbody>
+       </table>
+    </div>
+    
+   </div>
+   <div class="d-flex justify-content-center align-items-center" id="Spinner" style="visibility: visible">
+    <div class="spinner-border m-5" role="status">
+        <span class="sr-only"></span>
+    </div>
+</div>
+   <div class="container -md d-flex flex-row">
+       <div class="col-6 px-2">
+       <h2>Least Loyal (Bottom 10% of Party)</h2>
+       <table class="table">
+           <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Number Party Votes</th>
+                   <th>% Party Votes</th>
+               </tr>
+           </thead>
+           <tbody id="leastloyal">
+            <tr v-for="value in LL" :key="value.id">
+                <td> <a :href="value.url" target="blank" class="a"> {{value.first_name}} {{value.middle_name || ""}} {{value.last_name}} </a> </td>
+                <td> {{parseInt(value.total_votes / 100 * value.votes_with_party_pct)}} </td>
+                <td> {{value.votes_with_party_pct}}%</td>`
+            </tr>
+           </tbody>
+       </table>
+    </div>
+    
+    <div class="col-6 px-2">
+       <h2>Most Loyal (Top 10% of Party)</h2>
+       <table class="table">
+           <thead>
+               <tr>
+                   <th>Name</th>
+                   <th>Number Party Votes</th>
+                   <th>% Party Votes</th>
+               </tr>
+           </thead>
+           <tbody id="mostloyal">
+            <tr v-for="value in ML" :key="value.id">
+                <td> <a :href="value.url" target="blank" class="a"> {{value.first_name}} {{value.middle_name || ""}} {{value.last_name}} </a> </td>
+                <td> {{parseInt(value.total_votes / 100 * value.votes_with_party_pct)}} </td>
+                <td> {{value.votes_with_party_pct}}%</td>`
+            </tr>
+           </tbody>
+       </table>
+    </div>
+   </div>
+   <footer id="navbar" class="container-md border border-dark border-3">
+    <div id="textfooter" class="h-25 text-center">
+       © 2021 Data Insight Group | All Right Reserved
+    </div>
+</footer>
+  
+  <script src="./app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>    
+  
+</body>
+</html>
